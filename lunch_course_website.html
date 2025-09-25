@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lunch Learning Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .auth-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        input {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .course-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: none;
+        }
+
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .course-player {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 10px;
+            background: #f8f9fa;
+            margin: 20px 0;
+        }
+
+        .comments-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #eee;
+        }
+
+        .rating-section {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .stars {
+            display: inline-flex;
+            gap: 5px;
+            margin: 10px 0;
+        }
+
+        .star {
+            font-size: 30px;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .star.active, .star:hover {
+            color: #ffd700;
+        }
+
+        .comment-form {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .comment {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .comment-rating {
+            color: #ffd700;
+        }
+
+        .comment-date {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .user-info {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .course-player {
+                height: 400px;
+            }
+            
+            .course-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍽️ Lunch Learning Hub</h1>
+            <p>Learn something new during your lunch break!</p>
+        </div>
+
+        <div class="user-info" id="userInfo">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <span id="userDetails"></span>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="auth-section" id="authSection">
+            <h2 style="text-align: center; margin-bottom: 20px; color: #555;">Join Our Learning Community</h2>
+            <form class="auth-form" id="authForm">
+                <div class="form-group">
+                    <label for="fullName">Full Name *</label>
+                    <input type="text" id="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email">
+                </div>
+                <div class="form-group">
+                    <label for="whatsapp">WhatsApp Number</label>
+                    <input type="tel" id="whatsapp" placeholder="+1234567890">
+                </div>
+                <div class="form-group">
+                    <label for="company">Company Name</label>
+                    <input type="text" id="company">
+                </div>
+                <button type="submit" class="btn" id="authBtn">Join & Start Learning</button>
+            </form>
+        </div>
+
+        <div class="course-section" id="courseSection">
+            <div class="course-header">
+                <h2 id="courseTitle">Loading Course...</h2>
+                <div style="text-align: right;">
+                    <div style="color: #666; margin-bottom: 5px;">Your Progress</div>
+                    <div style="font-weight: bold; color: #667eea;"><span id="progressText">0%</span></div>
+                </div>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <iframe class="course-player" id="coursePlayer" src="about:blank">
+                <p>Your browser does not support iframes. Please update your browser to view the course content.</p>
+            </iframe>
+
+            <div class="comments-section">
+                <h3 style="margin-bottom: 20px; color: #555;">Rate & Review This Course</h3>
+                
+                <div class="rating-section">
+                    <div style="margin-bottom: 10px; color: #666;">How would you rate this course?</div>
+                    <div class="stars" id="ratingStars">
+                        <span class="star" data-rating="1">⭐</span>
+                        <span class="star" data-rating="2">⭐</span>
+                        <span class="star" data-rating="3">⭐</span>
+                        <span class="star" data-rating="4">⭐</span>
+                        <span class="star" data-rating="5">⭐</span>
+                    </div>
+                </div>
+
+                <div class="comment-form">
+                    <textarea id="commentText" placeholder="Share your thoughts about this course..."></textarea>
+                    <button class="btn" onclick="submitComment()" style="margin-top: 15px;">Submit Review</button>
+                </div>
+
+                <h4 style="margin: 30px 0 20px 0; color: #555;">What Others Are Saying</h4>
+                <div class="comments-list" id="commentsList">
+                    <div style="text-align: center; color: #999; padding: 40px;">
+                        Loading comments...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+     import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  // Your Firebase configuration
+      const firebaseConfig = {
+    apiKey: "AIzaSyCPRmF-XNNhDtSFYTRFLRwkaiDdCnY4EaI",
+    authDomain: "bassma-platform.firebaseapp.com",
+    projectId: "bassma-platform",
+    storageBucket: "bassma-platform.firebasestorage.app",
+    messagingSenderId: "399621529183",
+    appId: "1:399621529183:web:593814b7ef5db4962c05ea",
+    measurementId: "G-21WDKSLTK2"
+    };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+         const analytics = getAnalytics(app);
+
+        // Global variables
+        let currentUser = null;
+        let currentRating = 0;
+        let currentCourse = null;
+
+        // Check for existing user session
+        window.addEventListener('load', function() {
+            const savedUser = localStorage.getItem('lunchLearningUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showCourseSection();
+            }
+            loadActiveCourse();
+            setupRatingSystem();
+        });
+
+        // Authentication form handler
+        document.getElementById('authForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const whatsapp = document.getElementById('whatsapp').value;
+            const company = document.getElementById('company').value;
+
+            if (!fullName) {
+                alert('Please enter your full name');
+                return;
+            }
+
+            if (!email && !whatsapp) {
+                alert('Please enter either email or WhatsApp number');
+                return;
+            }
+
+            const authBtn = document.getElementById('authBtn');
+            authBtn.disabled = true;
+            authBtn.textContent = 'Joining...';
+
+            try {
+                // Create user ID based on email or whatsapp
+                const userId = email || whatsapp.replace(/\D/g, '');
+                
+                const userData = {
+                    id: userId,
+                    fullName: fullName,
+                    email: email || '',
+                    whatsapp: whatsapp || '',
+                    company: company || '',
+                    timeRegistered: serverTimestamp(),
+                    progress: 0
+                };
+
+                // Save to Firestore
+                await setDoc(doc(db, 'users', userId), userData, { merge: true });
+
+                // Save to localStorage
+                currentUser = userData;
+                localStorage.setItem('lunchLearningUser', JSON.stringify(userData));
+
+                showCourseSection();
+            } catch (error) {
+                console.error('Error saving user:', error);
+                alert('Error joining. Please try again.');
+            } finally {
+                authBtn.disabled = false;
+                authBtn.textContent = 'Join & Start Learning';
+            }
+        });
+
+        function showCourseSection() {
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('courseSection').style.display = 'block';
+            document.getElementById('userInfo').style.display = 'block';
+            
+            const userDetails = `Welcome back, ${currentUser.fullName}!`;
+            document.getElementById('userDetails').textContent = userDetails;
+            
+            loadComments();
+            loadUserProgress();
+        }
+
+        window.logout = function() {
+            localStorage.removeItem('lunchLearningUser');
+            currentUser = null;
+            document.getElementById('authSection').style.display = 'block';
+            document.getElementById('courseSection').style.display = 'none';
+            document.getElementById('userInfo').style.display = 'none';
+            document.getElementById('authForm').reset();
+        };
+
+        async function loadActiveCourse() {
+            try {
+                const courseDoc = await getDoc(doc(db, 'settings', 'activeCourse'));
+                if (courseDoc.exists()) {
+                    currentCourse = courseDoc.data();
+                    document.getElementById('courseTitle').textContent = currentCourse.title || 'Course Title';
+                    document.getElementById('coursePlayer').src = currentCourse.url || 'about:blank';
+                } else {
+                    document.getElementById('courseTitle').textContent = 'No Active Course';
+                    document.getElementById('coursePlayer').src = 'about:blank';
+                }
+            } catch (error) {
+                console.error('Error loading course:', error);
+            }
+        }
+
+        async function loadUserProgress() {
+            if (!currentUser) return;
+            
+            try {
+                const userDoc = await getDoc(doc(db, 'users', currentUser.id));
+                if (userDoc.exists()) {
+                    const progress = userDoc.data().progress || 0;
+                    updateProgressDisplay(progress);
+                }
+            } catch (error) {
+                console.error('Error loading progress:', error);
+            }
+        }
+
+        function updateProgressDisplay(progress) {
+            document.getElementById('progressText').textContent = `${progress}%`;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+        }
+
+        // Simulate progress tracking (you can integrate with actual Articulate player)
+        window.updateProgress = async function(progress) {
+            if (!currentUser) return;
+            
+            try {
+                await updateDoc(doc(db, 'users', currentUser.id), {
+                    progress: progress
+                });
+                updateProgressDisplay(progress);
+            } catch (error) {
+                console.error('Error updating progress:', error);
+            }
+        };
+
+        function setupRatingSystem() {
+            const stars = document.querySelectorAll('.star');
+            
+            stars.forEach((star, index) => {
+                star.addEventListener('click', () => {
+                    currentRating = index + 1;
+                    updateStarDisplay();
+                });
+                
+                star.addEventListener('mouseover', () => {
+                    const tempRating = index + 1;
+                    stars.forEach((s, i) => {
+                        s.classList.toggle('active', i < tempRating);
+                    });
+                });
+            });
+
+            document.getElementById('ratingStars').addEventListener('mouseleave', () => {
+                updateStarDisplay();
+            });
+        }
+
+        function updateStarDisplay() {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                star.classList.toggle('active', index < currentRating);
+            });
+        }
+
+        window.submitComment = async function() {
+            if (!currentUser) {
+                alert('Please log in to submit a review');
+                return;
+            }
+
+            const commentText = document.getElementById('commentText').value.trim();
+            if (!commentText) {
+                alert('Please enter a comment');
+                return;
+            }
+
+            if (currentRating === 0) {
+                alert('Please select a rating');
+                return;
+            }
+
+            try {
+                const commentData = {
+                    userId: currentUser.id,
+                    userName: currentUser.fullName,
+                    comment: commentText,
+                    rating: currentRating,
+                    timestamp: serverTimestamp(),
+                    courseId: currentCourse?.id || 'default'
+                };
+
+                await addDoc(collection(db, 'comments'), commentData);
+                
+                document.getElementById('commentText').value = '';
+                currentRating = 0;
+                updateStarDisplay();
+                
+                alert('Thank you for your review!');
+            } catch (error) {
+                console.error('Error submitting comment:', error);
+                alert('Error submitting review. Please try again.');
+            }
+        };
+
+        async function loadComments() {
+            try {
+                const q = query(
+                    collection(db, 'comments'), 
+                    orderBy('timestamp', 'desc')
+                );
+                
+                onSnapshot(q, (snapshot) => {
+                    const commentsList = document.getElementById('commentsList');
+                    
+                    if (snapshot.empty) {
+                        commentsList.innerHTML = '<div style="text-align: center; color: #999; padding: 40px;">No reviews yet. Be the first to share your thoughts!</div>';
+                        return;
+                    }
+                    
+                    const commentsHTML = snapshot.docs.map(doc => {
+                        const data = doc.data();
+                        const date = data.timestamp ? data.timestamp.toDate().toLocaleDateString() : 'Recent';
+                        const stars = '⭐'.repeat(data.rating);
+                        
+                        return `
+                            <div class="comment">
+                                <div class="comment-header">
+                                    <span class="comment-author">${data.userName}</span>
+                                    <div>
+                                        <span class="comment-rating">${stars}</span>
+                                        <span class="comment-date">${date}</span>
+                                    </div>
+                                </div>
+                                <p>${data.comment}</p>
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    commentsList.innerHTML = commentsHTML;
+                });
+            } catch (error) {
+                console.error('Error loading comments:', error);
+                document.getElementById('commentsList').innerHTML = '<div style="text-align: center; color: #999; padding: 40px;">Error loading reviews.</div>';
+            }
+        }
+
+        // Demo progress simulation - remove this in production
+        setTimeout(() => {
+            if (currentUser) {
+                window.updateProgress(25);
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
